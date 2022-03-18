@@ -1,5 +1,5 @@
-
-import os 
+import os
+from tkinter import * 
 from easygui import *
 
 
@@ -33,7 +33,7 @@ def rename_file() :
     
     try :
         os.rename(file_name , rename)
-        msgbox(f"{file_name} succesfuly chenged to {rename} ! ")
+        msgbox(f"{file_name} succesfuly chenged to {rename} ! \nYour renamed files will be saved in the same direction of program")
     except :
         msgbox(msg="Could not find the file")
     
@@ -59,39 +59,34 @@ def Make_file() :
         msgbox("FAILD")
         
     
-while True :
-    options = buttonbox(msg="What you want to do ? " , choices=["Delete file" , "Direction of the file" , "Read file" , "Rename file" , 
-                                                                "Make folder" , "Make file" ,"Exit"])
+window = Tk()
+window.geometry("126x450")
 
-    if options == "Delete file" :
-        deletefile() 
-    
-    elif options == "Direction of the file" :
-        Direction()
-    elif options == "Read file" :
-        read_file()
-    elif options == "Rename file" :
-        rename_file()
-    elif options == "Make folder" :
-        Make_folder()
-    elif options == "Make file" :
-        Make_file()
-    elif options == "Exit" :
-         break
-    
-msgbox(msg="GOODBYe")
+text_1 = Label(text="Welcome" , fg="#4285F4")
+text_1.grid(row=0 , column=0)
 
+button_1 = Button(text="Delete file" , command=deletefile , width=10 , height=3)
+button_1.grid(row=1 , column=0)
 
+button_2 = Button(text="Direction of the file" , command=Direction , width=10 , height=3)
+button_2.grid(row=2 , column=0)
 
+button_3 = Button(text="Reading file" , command=read_file , width=10 , height=3 )
+button_3.grid(row=3 , column=0)
 
+button_4 = Button(text="Renaming file" , command=rename_file , width=10 , height=3)
+button_4.grid(row=4 , column=0)
 
+button_5 = Button(text="Making folder" , command=Make_folder , width=10 , height=3)
+button_5.grid(row=5 , column=0)
 
+button_6 = Button(text="Making file" , command=Make_file , width=10 , height=3 )
+button_6.grid(row=6, column=0)
 
+button_7 = Button(text="Exit" , command=window.destroy , width=10 , height=3 )
+button_7.grid()
 
 
-
-
-
-
+window.mainloop()
 
 
