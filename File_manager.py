@@ -1,6 +1,9 @@
 import os
-from tkinter import * 
+from tkinter import *
+from tkinter import filedialog 
 from easygui import *
+from PIL import Image
+
 
 
             
@@ -13,8 +16,17 @@ def deletefile() :
          
                 
 def Direction():
-    file_name = diropenbox(msg="Choose file pass")
-    msgbox(msg=f"Direction of your file is : {file_name}")
+    choice = buttonbox(msg="Choose your type : " , choices=("File" , "Folder"))
+    try :
+        if(choice == "Folder") :
+            file_name = filedialog.askdirectory()
+        
+        elif(choice == "File") :
+            file_name = filedialog.askopenfilename()
+    
+        msgbox(msg=f"Direction of your file is : {file_name}")
+    except :
+        msgbox("Faild")
 
 
 def read_file() :
@@ -28,7 +40,8 @@ def read_file() :
             
             
 def rename_file() :
-    file_name = fileopenbox(msg="Choose the name of the file you want to rename : ")
+    file_name = filedialog.askopenfilename()
+    print(file_name)
     rename = enterbox(msg="Enter your new name : (With format) ")
     
     try :
@@ -39,7 +52,7 @@ def rename_file() :
     
         
 def Make_folder() :
-    file_name = diropenbox(msg="Choose your path : " , default="/Users/amir")
+    file_name = filedialog.askdirectory()
     new_folder = enterbox(msg="Enter the new folder name : ")
     try :
         os.mkdir(path=file_name + "/" + new_folder)
@@ -49,21 +62,58 @@ def Make_folder() :
         
     
 def Make_file() :
-    file_name = diropenbox(msg="Enter the direction : " ,  default="/Users/amir")
+    file_name = filedialog.askdirectory()
     new_file_name  = enterbox(msg="Enter your file name : (with format)")  
     print(file_name + "\n" + new_file_name)
     try :
         os.system(command=f"touch {file_name}/{new_file_name}")
+        msgbox("Done !")
         
     except :
         msgbox("FAILD")
         
     
 window = Tk()
-window.geometry("126x450")
 
-text_1 = Label(text="Welcome" , fg="#4285F4")
-text_1.grid(row=0 , column=0)
+window.geometry("240x450")
+window.title("File manager")
+
+
+#/////////////////////////
+file="The_Sheep.gif"
+
+info = Image.open(file)
+
+frames = info.n_frames  # gives total number of frames that gif contains
+
+# creating list of PhotoImage objects for each frames
+im = [PhotoImage(file=file,format=f"gif -index {i}") for i in range(frames)]
+
+count = 0
+anim = None
+
+def animation(count):
+    global anim
+    im2 = im[count]
+
+    gif_label.configure(image=im2)
+    count += 1
+    if count == frames:
+        count = 0
+    anim = window.after(100,lambda :animation(count))
+
+def stop_animation():
+    window.after_cancel(anim)
+
+gif_label = Label(window,image="")
+gif_label.grid()
+
+animation(count)
+
+#/////////////////////////
+
+#text_1 = Label(text="Welcome" , fg="yellow")
+#text_1.grid(row=0 , column=0)
 
 button_1 = Button(text="Delete file" , command=deletefile , width=10 , height=3)
 button_1.grid(row=1 , column=0)
